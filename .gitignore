@@ -1,0 +1,23 @@
+# System / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Node (even though no build is required, ignore if added later)
+node_modules/
+dist/
+
+# Local environment / secrets — never commit real keys
+.env
+.env.*
+*.local
+
+# Supabase CLI local state
+supabase/.temp/
+supabase/.branches/

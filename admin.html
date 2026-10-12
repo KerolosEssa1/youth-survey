@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>لوحة تحكم المسؤول — استبيان اللقاء الشبابي</title>
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="icon" href="./assets/images/meeting-logo.jpg" />
+
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.rtl.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cairo:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+  </head>
+
+  <body class="admin-page">
+    <!-- ===== شاشة تسجيل الدخول ===== -->
+    <section id="authGate" class="d-flex align-items-center justify-content-center min-vh-100 p-3">
+      <div class="card-soft w-100" style="max-width: 430px">
+        <div class="card-body p-4 p-md-5 text-center">
+          <img
+            src="./assets/images/meeting-logo.jpg"
+            alt="شعار اللقاء"
+            class="login-logo mb-3"
+          />
+          <h1 class="h4 fw-bold mb-1">لوحة تحكم المسؤول</h1>
+          <p class="text-muted mb-4">الدخول مخصص للمسؤولين المصرّح لهم فقط.</p>
+
+          <div id="configNotice" class="alert alert-warning d-none text-start" role="alert"></div>
+          <div id="loginError" class="alert alert-danger d-none text-start" role="alert"></div>
+
+          <form id="loginForm" class="text-end" novalidate>
+            <div class="mb-3">
+              <label for="loginEmail" class="form-label">البريد الإلكتروني</label>
+              <input
+                type="email"
+                class="form-control"
+                id="loginEmail"
+                autocomplete="username"
+                required
+              />
+            </div>
+            <div class="mb-3">
+              <label for="loginPassword" class="form-label">كلمة المرور</label>
+              <input
+                type="password"
+                class="form-control"
+                id="loginPassword"
+                autocomplete="current-password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-brand w-100" id="loginButton">
+              <i class="bi bi-box-arrow-in-left me-1"></i> تسجيل الدخول
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== لوحة التحكم ===== -->
+    <div id="adminApp" class="d-none">
+      <nav class="navbar navbar-expand admin-navbar">
+        <div class="container">
+          <span class="navbar-brand">
+            <img src="./assets/images/meeting-logo.jpg" alt="شعار اللقاء" />
+            <span>لوحة تحكم الاستبيان</span>
+          </span>
+          <div class="d-flex align-items-center gap-2">
+            <span class="text-white-50 d-none d-md-inline" id="adminEmail"></span>
+            <a
+              class="btn btn-sm btn-outline-light"
+              href="./index.html"
+              target="_blank"
+              rel="noopener"
+            >
+              <i class="bi bi-box-arrow-up-left me-1"></i> عرض الاستبيان
+            </a>
+            <button class="btn btn-sm btn-accent" id="logoutButton" type="button">
+              <i class="bi bi-box-arrow-right me-1"></i> خروج
+            </button>
+          </div>
+        </div>
+      </nav>
+
+      <main class="container admin-main">
+        <div id="adminNotice" class="alert d-none" role="alert"></div>
+
+        <ul class="nav nav-pills gap-2 mb-3" id="adminTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link active"
+              id="tab-questions-btn"
+              data-bs-toggle="pill"
+              data-bs-target="#tab-questions"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-ui-checks me-1"></i> الأسئلة
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="tab-responses-btn"
+              data-bs-toggle="pill"
+              data-bs-target="#tab-responses"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-inboxes me-1"></i> الردود
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button
+              class="nav-link"
+              id="tab-qr-btn"
+              data-bs-toggle="pill"
+              data-bs-target="#tab-qr"
+              type="button"
+              role="tab"
+            >
+              <i class="bi bi-qr-code me-1"></i> رمز QR
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- ===== الأسئلة ===== -->
+          <div class="tab-pane fade show active" id="tab-questions" role="tabpanel">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+              <h2 class="h5 fw-bold mb-0">إدارة الأسئلة</h2>
+              <button class="btn btn-brand" id="addQuestionButton" type="button">
+                <i class="bi bi-plus-lg me-1"></i> إضافة سؤال
+              </button>
+            </div>
+
+            <div id="questionsList" class="empty-state card-soft p-3">
+              <i class="bi bi-list-check"></i>
+              <p class="mb-0">لم يتم تحميل الأسئلة بعد.</p>
+            </div>
+          </div>
+
+          <!-- ===== الردود ===== -->
+          <div class="tab-pane fade" id="tab-responses" role="tabpanel">
+            <div class="row g-3 mb-3">
+              <div class="col-6 col-md-3">
+                <div class="stat-card">
+                  <div class="stat-value" id="statResponses">—</div>
+                  <div class="stat-label">إجمالي الردود</div>
+                </div>
+              </div>
+              <div class="col-6 col-md-3">
+                <div class="stat-card">
+                  <div class="stat-value" id="statQuestions">—</div>
+                  <div class="stat-label">عدد الأسئلة</div>
+                </div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="stat-card">
+                  <div class="stat-value" id="statUpdated">—</div>
+                  <div class="stat-label">آخر تحديث</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2 align-items-center mb-3">
+              <div class="input-group flex-grow-1" style="max-width: 420px">
+                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                <input
+                  type="search"
+                  class="form-control"
+                  id="responsesSearch"
+                  placeholder="ابحث في الردود…"
+                />
+              </div>
+              <select class="form-select" id="responsesSort" style="max-width: 220px">
+                <option value="newest">الأحدث أولًا</option>
+                <option value="oldest">الأقدم أولًا</option>
+              </select>
+              <button class="btn btn-accent" id="exportCsvButton" type="button">
+                <i class="bi bi-filetype-csv me-1"></i> تصدير CSV
+              </button>
+            </div>
+
+            <div class="card-soft p-3">
+              <div class="table-responsive">
+                <table class="table table-hover align-middle responses-table mb-0">
+                  <thead>
+                    <tr id="responsesHead">
+                      <th>#</th>
+                      <th>التاريخ</th>
+                    </tr>
+                  </thead>
+                  <tbody id="responsesBody">
+                    <tr>
+                      <td colspan="2" class="text-center text-muted py-4">
+                        لم يتم تحميل الردود بعد.
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== رمز QR ===== -->
+          <div class="tab-pane fade" id="tab-qr" role="tabpanel">
+            <div class="card-soft p-4">
+              <h2 class="h5 fw-bold mb-2">رمز QR للصفحة العامة</h2>
+              <p class="text-muted">
+                أدخل رابط الصفحة العامة المنشورة لتوليد رمز QR قابل للتنزيل والطباعة.
+              </p>
+
+              <div class="row g-3 align-items-start">
+                <div class="col-12 col-lg-6">
+                  <label for="qrUrl" class="form-label">رابط الصفحة العامة</label>
+                  <div class="input-group">
+                    <input
+                      type="url"
+                      class="form-control"
+                      id="qrUrl"
+                      placeholder="https://USERNAME.github.io/youth-survey/"
+                    />
+                    <button class="btn btn-brand" id="generateQrButton" type="button">
+                      توليد
+                    </button>
+                  </div>
+                  <button class="btn btn-outline-secondary mt-2" id="downloadQrButton" type="button" disabled>
+                    <i class="bi bi-download me-1"></i> تنزيل رمز QR
+                  </button>
+                </div>
+                <div class="col-12 col-lg-6 text-center">
+                  <div class="qr-holder">
+                    <div id="qrContainer" class="text-muted">لم يتم توليد رمز بعد</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- ===== نافذة إضافة/تعديل سؤال ===== -->
+      <div
+        class="modal fade"
+        id="questionModal"
+        tabindex="-1"
+        aria-labelledby="questionModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+          <div class="modal-content">
+            <form id="questionForm" novalidate>
+              <div class="modal-header">
+                <h2 class="modal-title h5 fw-bold" id="questionModalLabel">إضافة سؤال</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+              </div>
+              <div class="modal-body">
+                <input type="hidden" id="questionId" />
+
+                <div id="questionFormError" class="alert alert-danger d-none" role="alert"></div>
+
+                <div class="mb-3">
+                  <label for="questionTitle" class="form-label">نص السؤال <span class="required-mark">*</span></label>
+                  <input type="text" class="form-control" id="questionTitle" maxlength="500" required />
+                </div>
+
+                <div class="mb-3">
+                  <label for="questionDescription" class="form-label">وصف مساعد (اختياري)</label>
+                  <textarea class="form-control" id="questionDescription" rows="2" maxlength="1000"></textarea>
+                </div>
+
+                <div class="row g-3 mb-3">
+                  <div class="col-12 col-md-6">
+                    <label for="questionType" class="form-label">نوع السؤال <span class="required-mark">*</span></label>
+                    <select class="form-select" id="questionType" required>
+                      <option value="description">نص توضيحي (بدون إجابة)</option>
+                      <option value="text">نص قصير</option>
+                      <option value="textarea">نص طويل</option>
+                      <option value="number">رقم</option>
+                      <option value="single_choice">اختيار فردي</option>
+                      <option value="multiple_choice">اختيار متعدد</option>
+                      <option value="dropdown">قائمة منسدلة</option>
+                      <option value="yes_no">نعم / لا</option>
+                      <option value="true_false">صح / خطأ</option>
+                      <option value="rating">تقييم بالنجوم</option>
+                      <option value="linear_scale">مقياس خطي</option>
+                      <option value="date">تاريخ</option>
+                      <option value="time">وقت</option>
+                      <option value="datetime">تاريخ ووقت</option>
+                    </select>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <label class="form-label d-block">الإعدادات</label>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" id="questionRequired" />
+                      <label class="form-check-label" for="questionRequired">سؤال إلزامي</label>
+                    </div>
+                    <div class="form-check form-switch">
+                      <input class="form-check-input" type="checkbox" role="switch" id="questionActive" checked />
+                      <label class="form-check-label" for="questionActive">مُفعَّل (يظهر في الاستبيان)</label>
+                    </div>
+                  </div>
+                </div>
+
+                <div id="settingsFields" class="row g-3 mb-3 d-none"></div>
+
+                <div id="optionsSection" class="mb-2 d-none">
+                  <label class="form-label">الخيارات</label>
+                  <div id="optionsList"></div>
+                  <button class="btn btn-sm btn-outline-secondary" id="addOptionButton" type="button">
+                    <i class="bi bi-plus-lg me-1"></i> إضافة خيار
+                  </button>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">إلغاء</button>
+                <button type="submit" class="btn btn-brand" id="saveQuestionButton">حفظ</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <div class="container">لوحة تحكم استبيان اللقاء الشبابي — للمسؤولين فقط.</div>
+      </footer>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+    <script type="module" src="./assets/js/admin.js"></script>
+  </body>
+</html>
